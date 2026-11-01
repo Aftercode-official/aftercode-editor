@@ -14,6 +14,7 @@
     "clean": "rimraf ./build && mkdirp build && rimraf ./dist && mkdirp dist",
     "prebuild": "node scripts/build-scratch-blocks.js",
     "build": "npm run clean && webpack --colors --bail",
+    "prestart": "node scripts/build-scratch-blocks.js",
     "prepublish": "node scripts/prepublish.mjs",
     "prune": "./prune-gh-pages.sh",
     "i18n:push": "tx-push-src scratch-editor interface translations/en.json",
