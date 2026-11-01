@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import log from './log';
 import {getIsShowingProject} from '../reducers/project-state';
 
-const PACKAGER_URL = 'https://aftercode-packager.vercel.app/';
+const PACKAGER_URL = 'https://aftercode-official.github.io/Aftercode-packager/';
 const PACKAGER_ORIGIN = new URL(PACKAGER_URL).origin;
 
 const PackagerIntegrationHOC = function (WrappedComponent) {

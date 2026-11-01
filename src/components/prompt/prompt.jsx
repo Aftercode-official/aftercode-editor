@@ -43,7 +43,7 @@ const messages = defineMessages({
 
 const Packager = () => (
     <a
-        href="https://aftercode-packager.vercel.app/"
+        href="https://aftercode-official.github.io/Aftercode-packager/"
         target="_blank"
         rel="noopener noreferrer"
     >

@@ -132,7 +132,7 @@ const Footer = () => (
                         {/* Do not translate */}
                         {'TurboWarp Desktop'}
                     </a>
-                    <a href="https://aftercode-packager.vercel.app/">
+                    <a href="https://aftercode-official.github.io/Aftercode-packager/">
                         {/* Do not translate */}
                         {'Aftercode Packager'}
                     </a>
