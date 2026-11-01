@@ -49,9 +49,9 @@ const gallerySources = [
 
         id: 'aftercode', // Chuyển thành viết thường để khớp với galleryStatusItems
 
-        baseURL: 'https://aftercode-extensions.vercel.app/',
+        baseURL: 'https://aftercode-official.github.io/Aftercode-extensions/',
 
-        metadataURL: 'https://aftercode-extensions.vercel.app/generated-metadata/extensions-v0.json',
+        metadataURL: 'https://aftercode-official.github.io/Aftercode-extensions/generated-metadata/extensions-v0.json',
 
         tag: 'ac'
 

@@ -28,7 +28,7 @@ const isTrustedExtension = url => (
     url.startsWith('https://extensions.turbowarp.org/') ||
 
     // Trust our own extension repository.
-    url.startsWith('https://aftercode-extensions.vercel.app/') ||
+    url.startsWith('https://aftercode-official.github.io/Aftercode-extensions/') ||
 
     // For development.
     url.startsWith('http://localhost:8000/') ||

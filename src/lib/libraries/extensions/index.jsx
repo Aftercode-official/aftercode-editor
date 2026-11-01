@@ -439,7 +439,7 @@ const gallerySourceDisplay = {
     },
     aftercode: {
         name: 'Aftercode Extension Gallery',
-        href: 'https://aftercode-extensions.vercel.app/',
+        href: 'https://aftercode-official.github.io/Aftercode-extensions/',
         iconURL: galleryIcon,
         tag: 'ac'
     },
@@ -472,7 +472,7 @@ export const galleryStatusItems = {
     },
     aftercode: {
         loading: createGalleryStatusItem('aftercode', 'Loading Aftercode extension gallery...'),
-        more: createGalleryStatusItem('aftercode', 'Learn more about extensions at aftercode-extensions.vercel.app.'),
+        more: createGalleryStatusItem('aftercode', 'Learn more about extensions at aftercode-official.github.io/Aftercode-extensions/'),
         error: createGalleryStatusItem('aftercode', 'Error loading Aftercode extension gallery. Visit extensions.aftercode.org to find more extensions.')
     },
     turbowarp: {
