@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import omit from 'lodash.omit';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {toggleAftercodeMode} from '../../reducers/editor-mode';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import {connect} from 'react-redux';
 import MediaQuery from 'react-responsive';
@@ -79,6 +80,7 @@ const GUIComponent = props => {
     const {
         accountNavOpen,
         activeTabIndex,
+        aftercodeMode,
         alertsVisible,
         authorId,
         authorThumbnailUrl,
@@ -133,6 +135,7 @@ const GUIComponent = props => {
         onActivateCostumesTab,
         onActivateSoundsTab,
         onActivateTab,
+        onToggleEditorMode,
         onClickLogo,
         onExtensionButtonClick,
         onOpenCustomExtensionModal,
@@ -401,6 +404,19 @@ const GUIComponent = props => {
                                         Assets
                                     </Tab>
                                 </TabList>
+                                <button
+                                    className={styles.editorModeSwitch}
+                                    type="button"
+                                    role="switch"
+                                    aria-checked={aftercodeMode}
+                                    onClick={onToggleEditorMode}
+                                    title={aftercodeMode ? 'Aftercode mode' : 'Scratch Vanilla mode'}
+                                >
+                                    <span className={styles.editorModeSwitchTrack}>
+                                        <span className={styles.editorModeSwitchThumb} />
+                                    </span>
+                                    <span>{aftercodeMode ? 'Aftercode' : 'Scratch Vanilla'}</span>
+                                </button>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     <Box className={styles.blocksWrapper}>
                                         <Blocks
@@ -501,6 +517,7 @@ GUIComponent.propTypes = {
     costumeLibraryVisible: PropTypes.bool,
     costumesTabVisible: PropTypes.bool,
     assetsTabVisible: PropTypes.bool,
+    aftercodeMode: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number
@@ -520,6 +537,7 @@ GUIComponent.propTypes = {
     onActivateCostumesTab: PropTypes.func,
     onActivateSoundsTab: PropTypes.func,
     onActivateTab: PropTypes.func,
+    onToggleEditorMode: PropTypes.func,
     onClickAccountNav: PropTypes.func,
     onClickAddonSettings: PropTypes.func,
     onClickDesktopSettings: PropTypes.func,
@@ -590,6 +608,7 @@ GUIComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+    aftercodeMode: state.scratchGui.editorMode,
     customStageSize: state.scratchGui.customStageSize,
     isWindowFullScreen: state.scratchGui.tw.isWindowFullScreen,
     // This is the button's mode, as opposed to the actual current state
@@ -598,6 +617,11 @@ const mapStateToProps = state => ({
     theme: state.scratchGui.theme.theme
 });
 
+const mapDispatchToProps = dispatch => ({
+    onToggleEditorMode: () => dispatch(toggleAftercodeMode())
+});
+
 export default injectIntl(connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(GUIComponent));

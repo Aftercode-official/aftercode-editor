@@ -74,6 +74,50 @@
     color: $text-primary;
 }
 
+.editor-mode-switch {
+    position: absolute;
+    z-index: 20;
+    top: 0.25rem;
+    left: 620px;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    border: 0;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: $text-primary;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.editor-mode-switch-track {
+    width: 2rem;
+    height: 1.1rem;
+    padding: 2px;
+    border-radius: 1rem;
+    background: $ui-tertiary;
+    box-shadow: inset 0 0 0 1px $ui-black-transparent;
+}
+
+.editor-mode-switch[aria-checked="true"] .editor-mode-switch-track {
+    background: #4c97ff;
+}
+
+.editor-mode-switch-thumb {
+    display: block;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: white;
+    transition: transform 120ms ease;
+}
+
+.editor-mode-switch[aria-checked="true"] .editor-mode-switch-thumb {
+    transform: translateX(0.85rem);
+}
+
 .tab {
     flex-grow: 1;
     height: 80%;

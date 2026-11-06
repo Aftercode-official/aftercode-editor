@@ -267,6 +267,7 @@ class Blocks extends React.Component {
             this.state.toolboxPosition !== nextState.toolboxPosition ||
             this.props.isVisible !== nextProps.isVisible ||
             this._renderedToolboxXML !== nextProps.toolboxXML ||
+            this.props.aftercodeMode !== nextProps.aftercodeMode ||
             this.props.extensionLibraryVisible !== nextProps.extensionLibraryVisible ||
             this.props.customProceduresVisible !== nextProps.customProceduresVisible ||
             this.props.locale !== nextProps.locale ||
@@ -291,6 +292,10 @@ class Blocks extends React.Component {
         // Do not check against prevProps.toolboxXML because that may not have been rendered.
         if (this.props.isVisible && this.props.toolboxXML !== this._renderedToolboxXML) {
             this.requestToolboxUpdate();
+        }
+        if (this.props.aftercodeMode !== prevProps.aftercodeMode) {
+            const toolboxXML = this.getToolboxXML();
+            if (toolboxXML) this.props.updateToolboxState(toolboxXML);
         }
 
         if (this.props.isVisible === prevProps.isVisible) {
@@ -515,7 +520,8 @@ class Blocks extends React.Component {
                 stageCostumes[stageCostumes.length - 1].name,
                 targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : '',
                 '', // assetName
-                this.props.theme.getBlockColors()
+                this.props.theme.getBlockColors(),
+                [], this.props.aftercodeMode
             );
         } catch {
             return null;
@@ -883,6 +889,7 @@ Blocks.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+    aftercodeMode: state.scratchGui.editorMode,
     anyModalVisible: (
         Object.keys(state.scratchGui.modals).some(key => state.scratchGui.modals[key]) ||
         state.scratchGui.mode.isFullScreen

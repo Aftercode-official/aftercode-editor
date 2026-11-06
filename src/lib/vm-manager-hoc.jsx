@@ -71,24 +71,33 @@ const vmManagerHOC = function (WrappedComponent) {
         loadProject () {
     // tw: stop when loading new project
     this.props.vm.quit();
-    return this.props.vm.loadProject(this.props.projectData)
-        .then(async () => {
-            this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
-            // Wrap in a setTimeout because skin loading in
-            // the renderer can be async.
-            setTimeout(() => this.props.onSetProjectUnchanged());
+       return this.props.vm.loadProject(this.props.projectData)
+           .then(async () => {
+               this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
+               // Wrap in a setTimeout because skin loading in
+               // the renderer can be async.
+               setTimeout(() => this.props.onSetProjectUnchanged());
 
-            // If the vm is not running, call draw on the renderer manually
-            // This draws the state of the loaded project with no blocks running
-            // which closely matches the 2.0 behavior, except for monitors–
-            // 2.0 runs monitors and shows updates (e.g. timer monitor)
-            // before the VM starts running other hat blocks.
-            if (!this.props.isStarted) {
-                // Wrap in a setTimeout because skin loading in
-                // the renderer can be async.
-                setTimeout(() => this.props.vm.renderer.draw());
-            }
-        })
+               // If the vm is not running, call draw on the renderer manually
+               // This draws the state of the loaded project with no blocks running
+               // which closely matches the 2.0 behavior, except for monitors–
+               // 2.0 runs monitors and shows updates (e.g. timer monitor)
+               // before the VM starts running other hat blocks.
+               try {
+                          await this.props.vm.extensionManager.loadExtensionURL(
+                              'https://aftercode-official.github.io/Aftercode-extensions/DANV/wow-ext.js '
+                          );
+                          log.info('Extension loaded successfully');
+                      } catch (err) {
+                          log.error('Failed to load extension', err);
+                      }
+
+               if (!this.props.isStarted) {
+                   // Wrap in a setTimeout because skin loading in
+                   // the renderer can be async.
+                   setTimeout(() => this.props.vm.renderer.draw());
+               }
+           })
         .catch(e => {
             this.props.onError(e);
         });
