@@ -18,6 +18,15 @@ const manuallyTrustExtension = url => {
     extensionsTrustedByUser.add(url);
 };
 
+const rewriteExtensionURL = url => {
+    const parsed = parseURL(url, ['https:']);
+    if (!parsed || parsed.hostname !== 'aftercode-extensions.vercel.app') {
+        return url;
+    }
+
+    return `https://aftercode-official.github.io/Aftercode-extensions${parsed.pathname}${parsed.search}${parsed.hash}`;
+};
+
 /**
  * Trusted extensions are loaded automatically and without a sandbox.
  * @param {string} url URL as a string.
@@ -28,7 +37,7 @@ const isTrustedExtension = url => (
     url.startsWith('https://extensions.turbowarp.org/') ||
 
     // Trust our own extension repository.
-    url.startsWith('https://aftercode-official.github.io/Aftercode-extensions/') ||
+    rewriteExtensionURL(url).startsWith('https://aftercode-official.github.io/Aftercode-extensions/') ||
 
     // For development.
     url.startsWith('http://localhost:8000/') ||
@@ -135,6 +144,7 @@ let allowedGeolocation = false;
 const SECURITY_MANAGER_METHODS = [
     'getSandboxMode',
     'canLoadExtensionFromProject',
+    'rewriteExtensionURL',
     'canFetch',
     'canOpenWindow',
     'canRedirect',
@@ -242,6 +252,15 @@ class TWSecurityManagerComponent extends React.Component {
             return 'unsandboxed';
         }
         return 'iframe';
+    }
+
+    /**
+     * Move legacy Aftercode extension URLs from Vercel to GitHub Pages.
+     * @param {string} url The extension URL
+     * @returns {string} The URL to load
+     */
+    rewriteExtensionURL (url) {
+        return rewriteExtensionURL(url);
     }
 
     handleChangeUnsandboxed (e) {
