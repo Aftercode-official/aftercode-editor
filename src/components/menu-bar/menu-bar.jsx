@@ -400,7 +400,7 @@ class MenuBar extends React.Component {
           try {
               // 1. Mở tab trước để trình duyệt không chặn Popup
               const LOGO_URL = 'https://i.ibb.co/9mhxsQM2/ezgif-1b203d38782d98f9.png';
-              const targetUrl = "https://danvpr.github.io/workshop/#upload";
+              const targetUrl = "https://turboshare.org.uk/#upload";
               const workshopTab = window.open(targetUrl, "_blank");
 
               if (!workshopTab) {
