@@ -1,5 +1,6 @@
 @import "../../css/units.css";
 @import "../../css/colors.css";
+@import "../../css/filters.css";
 @import "../../css/z-index.css";
 
 .page-wrapper {
@@ -78,7 +79,7 @@
     position: absolute;
     z-index: 20;
     top: 0.25rem;
-    left: 620px;
+    right: 0.5rem;
     height: 1.75rem;
     display: flex;
     align-items: center;
@@ -130,7 +131,7 @@
     font-size: 0.75rem;
 
     background-color: $ui-tertiary;
-    color: $text-primary-transparent;
+    color: var(--editor-tab-foreground, $text-primary-transparent);
 
     display: flex;
     justify-content: center;
@@ -176,14 +177,14 @@
 
 .tab.is-selected {
     height: 90%;
-    color: $looks-secondary;
+    color: var(--editor-tab-foreground, $looks-secondary);
     background-color: $ui-white;
     z-index: 4; /* Make sure selected is always above */
 }
 
 .tab img {
     width: 1.375rem;
-    filter: grayscale(100%);
+    filter: var(--editor-tab-icon-filter, grayscale(100%));
 }
 
 [dir="ltr"] .tab img {
@@ -204,7 +205,15 @@
 }
 
 .tab.is-selected img {
-    filter: none;
+    filter: var(--editor-selected-icon-filter, none);
+}
+
+.tab-list img {
+    filter: var(--editor-tab-icon-filter, grayscale(100%));
+}
+
+.tab-list .is-selected img {
+    filter: var(--editor-selected-icon-filter, none);
 }
 
 /* Tab style overrides from react-tabs */
@@ -320,6 +329,7 @@ $fade-out-distance: 15px;
 .extension-button-icon {
     width: 1.75rem;
     height: 1.75rem;
+    filter: var(--gui-icon-filter, var(--accent-icon-filter, none));
 }
 
 [dir="rtl"] .extension-button-icon {

@@ -58,6 +58,16 @@ const guiColors = {
     'menu-bar-background': 'var(--looks-secondary)',
     'menu-bar-background-image': 'none',
     'menu-bar-foreground': '#ffffff',
+    'gui-nav-background': 'var(--looks-secondary)',
+    'accent-icon-filter': 'none',
+    'gui-icon-filter': 'brightness(0)',
+    'nav-icon-filter': 'brightness(0)',
+    'gui-nav-icon-filter': 'brightness(0)',
+    'gui-nav-foreground': '#111111',
+    'editor-tab-foreground': '#000000',
+    'editor-tab-selected-foreground': '#000000',
+    'editor-tab-icon-filter': 'var(--gui-nav-icon-filter)',
+    'editor-selected-icon-filter': 'var(--gui-nav-icon-filter)',
 
     'assets-background': '#ffffff',
 
@@ -81,9 +91,9 @@ const guiColors = {
 
     'link-color': '#2255dd',
 
-    'filter-icon-black': 'none',
-    'filter-icon-gray': 'grayscale(100%)',
-    'filter-icon-white': 'none',
+    'filter-icon-black': 'brightness(0)',
+    'filter-icon-gray': 'brightness(0)',
+    'filter-icon-white': 'brightness(0)',
 
     'paint-ui-pane-border': 'var(--ui-black-transparent)',
     'paint-text-primary': 'var(--text-primary)',

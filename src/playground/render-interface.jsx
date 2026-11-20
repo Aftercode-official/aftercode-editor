@@ -35,6 +35,7 @@ import ProjectInput from '../components/tw-project-input/project-input.jsx';
 import FeaturedProjects from '../components/tw-featured-projects/featured-projects.jsx';
 import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
+import AddonsModal from '../components/tw-addons-modal/tw-addons-modal.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import TWWindchimeSubmitter from '../containers/tw-windchime-submitter.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
@@ -47,13 +48,6 @@ import {APP_NAME} from '../lib/brand.js';
 import styles from './interface.css';
 
 const isInvalidEmbed = window.parent !== window;
-
-const handleClickAddonSettings = addonId => {
-    // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
-    const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
-    const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
-    window.open(url);
-};
 
 const messages = defineMessages({
     defaultTitle: {
@@ -190,6 +184,12 @@ class Interface extends React.Component {
     constructor (props) {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
+        this.handleClickAddonSettings = this.handleClickAddonSettings.bind(this);
+        this.handleCloseAddonSettings = this.handleCloseAddonSettings.bind(this);
+        this.state = {
+            addonsModalOpen: false,
+            addonSettingsId: null
+        };
     }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
@@ -202,6 +202,18 @@ class Interface extends React.Component {
         } else {
             document.title = `${title} - ${APP_NAME}`;
         }
+    }
+    handleClickAddonSettings (addonId) {
+        this.setState({
+            addonsModalOpen: true,
+            addonSettingsId: typeof addonId === 'string' ? addonId : null
+        });
+    }
+    handleCloseAddonSettings () {
+        this.setState({
+            addonsModalOpen: false,
+            addonSettingsId: null
+        });
     }
     render () {
         if (isInvalidEmbed) {
@@ -239,7 +251,7 @@ class Interface extends React.Component {
                             canManageFiles
                             canChangeTheme
                             enableSeeInside
-                            onClickAddonSettings={handleClickAddonSettings}
+                            onClickAddonSettings={this.handleClickAddonSettings}
                         />
                     </div>
                 ) : null}
@@ -251,12 +263,18 @@ class Interface extends React.Component {
                     }) : null}
                 >
                     <GUI
-                        onClickAddonSettings={handleClickAddonSettings}
+                        onClickAddonSettings={this.handleClickAddonSettings}
                         onUpdateProjectTitle={this.handleUpdateProjectTitle}
                         backpackVisible
                         backpackHost="_local_"
                         {...props}
                     />
+                    {this.state.addonsModalOpen && (
+                        <AddonsModal
+                            addonId={this.state.addonSettingsId}
+                            onClose={this.handleCloseAddonSettings}
+                        />
+                    )}
                     {isHomepage ? (
                         <React.Fragment>
                             {isBrowserSupported() ? null : (

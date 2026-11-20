@@ -33,4 +33,5 @@
     margin: 0.25rem;
     user-select: none;
     transform-origin: 50%;
+    filter: var(--gui-icon-filter, var(--accent-icon-filter, none));
 }

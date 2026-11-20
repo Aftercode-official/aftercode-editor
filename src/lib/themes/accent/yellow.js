@@ -3,6 +3,12 @@ const guiColors = {
     'motion-primary-transparent': '#ffee00d8',
     'motion-tertiary': '#fcff40',
 
+    'ui-modal-header-background': 'var(--looks-secondary)',
+    'ui-modal-header-foreground': '#111111',
+    'menu-bar-background': 'var(--gui-nav-background, var(--looks-secondary))',
+    'menu-bar-foreground': 'var(--gui-nav-foreground, #111111)',
+    'accent-icon-filter': 'brightness(0)',
+
     'looks-secondary': '#ffd700',
     'looks-transparent': '#ffd90059',
     'looks-light-transparent': '#fff34d26',

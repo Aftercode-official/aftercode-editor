@@ -30,7 +30,6 @@ import Channels from '../channels';
 import extensionImage from './icons/extension.svg';
 import brushImage from './icons/brush.svg';
 import undoImage from './icons/undo.svg';
-import expandImageBlack from './icons/expand.svg';
 import infoImage from './icons/info.svg';
 import TWFancyCheckbox from '../../components/tw-fancy-checkbox/checkbox.jsx';
 import styles from './settings.css';
@@ -92,39 +91,6 @@ const filterAddonsBySupport = () => {
     };
 };
 const {supported: supportedAddons, unsupported: unsupportedAddons} = filterAddonsBySupport();
-
-const groupAddons = () => {
-    const groups = {
-        new: {
-            label: settingsTranslations.groupNew,
-            open: true,
-            addons: []
-        },
-        others: {
-            label: settingsTranslations.groupOthers,
-            open: true,
-            addons: []
-        },
-        danger: {
-            label: settingsTranslations.groupDanger,
-            open: false,
-            addons: []
-        }
-    };
-    const manifests = Object.values(supportedAddons);
-    for (let index = 0; index < manifests.length; index++) {
-        const manifest = manifests[index];
-        if (manifest.tags.includes('new')) {
-            groups.new.addons.push(index);
-        } else if (manifest.tags.includes('danger') || manifest.noCompiler) {
-            groups.danger.addons.push(index);
-        } else {
-            groups.others.addons.push(index);
-        }
-    }
-    return groups;
-};
-const groupedAddons = groupAddons();
 
 const getInitialSearch = () => {
     const hash = location.hash.substring(1);
@@ -274,7 +240,7 @@ class TextInput extends React.Component {
         };
     }
     handleKeyPress (e) {
-        if (e.key === 'Enter') {
+        if (!this.props.multiline && e.key === 'Enter') {
             this.handleFlush(e);
             e.target.blur();
         }
@@ -315,9 +281,12 @@ class TextInput extends React.Component {
         });
     }
     render () {
+        const {multiline, ...inputProps} = this.props;
+        const Input = multiline ? 'textarea' : 'input';
         return (
-            <input
-                {...this.props}
+            <Input
+                {...inputProps}
+                type={multiline ? undefined : this.props.type}
                 value={this.state.value === null ? this.props.value : this.state.value}
                 onFocus={this.handleFocus}
                 onBlur={this.handleFlush}
@@ -330,6 +299,7 @@ class TextInput extends React.Component {
 TextInput.propTypes = {
     onChange: PropTypes.func.isRequired,
     type: PropTypes.string,
+    multiline: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
@@ -429,6 +399,8 @@ const Setting = ({
                     <TextInput
                         id={uniqueId}
                         type="text"
+                        multiline={setting.multiline}
+                        rows={setting.multiline ? 12 : undefined}
                         value={value}
                         onChange={newValue => SettingsStore.setAddonSetting(addonId, settingId, newValue)}
                     />
@@ -478,6 +450,7 @@ Setting.propTypes = {
         name: PropTypes.string,
         min: PropTypes.number,
         max: PropTypes.number,
+        multiline: PropTypes.bool,
         default: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
         potentialValues: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string,
@@ -752,60 +725,6 @@ const InternalAddonList = ({addons, extended}) => (
     ))
 );
 
-class AddonGroup extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            open: props.open
-        };
-    }
-    render () {
-        if (this.props.addons.length === 0) {
-            return null;
-        }
-        return (
-            <div className={styles.addonGroup}>
-                <button
-                    className={styles.addonGroupName}
-                    onClick={() => {
-                        this.setState({
-                            open: !this.state.open
-                        });
-                    }}
-                >
-                    <div
-                        className={styles.addonGroupExpandContainer}
-                    >
-                        <img
-                            className={styles.addonGroupExpandIcon}
-                            src={expandImageBlack}
-                            data-open={this.state.open}
-                            alt=""
-                        />
-                    </div>
-                    {this.props.label.replace('{number}', this.props.addons.length)}
-                </button>
-                {this.state.open && (
-                    <InternalAddonList
-                        addons={this.props.addons}
-                        extended={this.props.extended}
-                    />
-                )}
-            </div>
-        );
-    }
-}
-AddonGroup.propTypes = {
-    label: PropTypes.string,
-    open: PropTypes.bool,
-    addons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        state: PropTypes.shape({}).isRequired,
-        manifest: PropTypes.shape({}).isRequired
-    })).isRequired,
-    extended: PropTypes.bool.isRequired
-};
-
 const addonToSearchItem = ({id, manifest}) => {
     const texts = new Set();
     const addText = (score, text) => {
@@ -854,40 +773,86 @@ class AddonList extends React.Component {
     constructor (props) {
         super(props);
         this.search = new Search(this.props.addons.map(addonToSearchItem));
-        this.groups = [];
+        this.state = {
+            category: 'all'
+        };
     }
     render () {
-        if (this.props.search) {
-            const addons = this.search.search(this.props.search)
-                .slice(0, 20)
-                .map(({index}) => this.props.addons[index]);
-            if (addons.length === 0) {
-                return (
-                    <div className={styles.noResults}>
-                        {settingsTranslations.noResults}
-                    </div>
-                );
+        const isDangerous = addon => addon.manifest.tags.includes('danger') || addon.manifest.noCompiler;
+        const categories = [
+            {
+                id: 'all',
+                label: 'All Addons',
+                filter: () => true
+            },
+            {
+                id: 'new',
+                label: count => settingsTranslations.groupNew.replace('{number}', count),
+                filter: addon => addon.manifest.tags.includes('new')
+            },
+            {
+                id: 'theme',
+                label: count => `${settingsTranslations.tagTheme} (${count})`,
+                filter: addon => addon.manifest.tags.includes('theme')
+            },
+            {
+                id: 'recommended',
+                label: count => `${settingsTranslations.tagRecommended} (${count})`,
+                filter: addon => addon.manifest.tags.includes('recommended')
+            },
+            {
+                id: 'danger',
+                label: count => settingsTranslations.groupDanger.replace('{number}', count),
+                filter: isDangerous
+            },
+            {
+                id: 'others',
+                label: count => settingsTranslations.groupOthers.replace('{number}', count),
+                filter: addon => (
+                    !addon.manifest.tags.includes('new') &&
+                    !addon.manifest.tags.includes('theme') &&
+                    !addon.manifest.tags.includes('recommended') &&
+                    !isDangerous(addon)
+                )
             }
-            return (
-                <div>
-                    <InternalAddonList
-                        addons={addons}
-                        extended={this.props.extended}
-                    />
-                </div>
-            );
-        }
+        ].map(category => ({
+            ...category,
+            addons: this.props.addons.filter(category.filter)
+        }));
+        const selectedCategory = this.props.search ? 'all' : this.state.category;
+        const category = categories.find(item => item.id === selectedCategory);
+        const categoryAddons = category.addons;
+        const searchResults = this.props.search ? this.search.search(this.props.search)
+            .slice(0, 20)
+            .map(({index}) => this.props.addons[index]) : categoryAddons;
+        const addons = this.props.search ? searchResults : categoryAddons;
+
         return (
-            <div>
-                {Object.entries(groupedAddons).map(([id, {label, addons, open}]) => (
-                    <AddonGroup
-                        key={id}
-                        label={label}
-                        open={open}
-                        addons={addons.map(index => this.props.addons[index])}
-                        extended={this.props.extended}
-                    />
-                ))}
+            <div className={styles.addonBrowser}>
+                <nav className={styles.categorySidebar}>
+                    {categories.filter(item => item.id === 'all' || item.addons.length > 0).map(item => (
+                        <button
+                            key={item.id}
+                            className={styles.categoryButton}
+                            data-active={selectedCategory === item.id}
+                            onClick={() => this.setState({category: item.id})}
+                        >
+                            {typeof item.label === 'function' ? item.label(item.addons.length) : item.label}
+                        </button>
+                    ))}
+                </nav>
+                <div className={styles.categoryContent}>
+                    {addons.length === 0 ? (
+                        <div className={styles.noResults}>
+                            {settingsTranslations.noResults}
+                        </div>
+                    ) : (
+                        <InternalAddonList
+                            addons={addons}
+                            extended={this.props.extended}
+                        />
+                    )}
+                </div>
             </div>
         );
     }

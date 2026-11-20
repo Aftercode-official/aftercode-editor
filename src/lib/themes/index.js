@@ -27,6 +27,15 @@ const ACCENT_MAP = {
     [ACCENT_YELLOW]: accentYellow
 };
 const ACCENT_DEFAULT = ACCENT_YELLOW;
+const NON_YELLOW_ACCENT_ICON_COLORS = {
+    'gui-icon-filter': 'brightness(0) invert(100%)',
+    'gui-nav-icon-filter': 'brightness(0) invert(100%)',
+    'gui-nav-foreground': '#ffffff',
+    'menu-bar-foreground': 'var(--gui-nav-foreground)',
+    'editor-tab-foreground': 'var(--text-primary)',
+    'editor-tab-selected-foreground': 'var(--looks-secondary)',
+    'editor-selected-icon-filter': 'none'
+};
 
 const createCustomAccent = color => ({
     color,
@@ -136,9 +145,19 @@ class Theme {
     }
 
     getGuiColors () {
+        const accentColors = this.customAccent || ACCENT_MAP[this.accent];
+        const accentIconColors = this.accent === ACCENT_YELLOW ? {} : NON_YELLOW_ACCENT_ICON_COLORS;
+        const accentEditorIconColors = this.accent === ACCENT_YELLOW ? {} : {
+            'editor-tab-icon-filter': this.gui === GUI_DARK ?
+                'brightness(0) invert(100%)' : 'grayscale(100%)',
+            'filter-icon-gray': this.gui === GUI_DARK ?
+                'brightness(0) invert(100%)' : 'grayscale(100%)'
+        };
         return defaultsDeep(
             {},
-            (this.customAccent || ACCENT_MAP[this.accent]).guiColors,
+            accentEditorIconColors,
+            accentIconColors,
+            accentColors.guiColors,
             GUI_MAP[this.gui].guiColors,
             guiLight.guiColors
         );

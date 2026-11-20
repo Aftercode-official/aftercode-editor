@@ -58,6 +58,7 @@ button::-moz-focus-inner {
 .main-icon {
     width: calc($main-button-size - 1rem);
     height: calc($main-button-size - 1rem);
+    filter: var(--gui-icon-filter, none);
 }
 
 [dir="rtl"] .main-icon {
@@ -121,6 +122,7 @@ button::-moz-focus-inner {
 .more-icon {
     width: calc($more-button-size - 1rem);
     height: calc($more-button-size - 1rem);
+    filter: var(--gui-icon-filter, none);
 }
 
 .coming-soon .more-icon {

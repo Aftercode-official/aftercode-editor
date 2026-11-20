@@ -189,6 +189,7 @@ const AboutButton = props => (
     <Button
         className={classNames(styles.menuBarItem, styles.hoverable)}
         iconClassName={styles.aboutIcon}
+        icon        className={styles.menuBarIcon}
         iconSrc={aboutIcon}
         onClick={props.onClick}
     />
@@ -584,12 +585,14 @@ class MenuBar extends React.Component {
                                 onClose={this.props.onRequestCloseErrors}
                             >
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={errorIcon}
                                     draggable={false}
                                     width={20}
                                     height={20}
                                 />
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={dropdownCaret}
                                     draggable={false}
                                     width={8}
@@ -655,6 +658,7 @@ class MenuBar extends React.Component {
                                 onClose={this.props.onRequestCloseFile}
                             >
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={fileIcon}
                                     draggable={false}
                                     width={20}
@@ -668,6 +672,7 @@ class MenuBar extends React.Component {
                                     />
                                 </span>
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={dropdownCaret}
                                     draggable={false}
                                     width={8}
@@ -810,6 +815,7 @@ class MenuBar extends React.Component {
                             onClose={this.props.onRequestCloseEdit}
                         >
                             <img
+                                className={styles.menuBarIcon}
                                 src={editIcon}
                                 draggable={false}
                                 width={20}
@@ -823,6 +829,7 @@ class MenuBar extends React.Component {
                                 />
                             </span>
                             <img
+                                className={styles.menuBarIcon}
                                 src={dropdownCaret}
                                 draggable={false}
                                 width={8}
@@ -986,6 +993,7 @@ class MenuBar extends React.Component {
                                 onClick={this.props.onClickAddonSettings}
                             >
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={addonsIcon}
                                     draggable={false}
                                     width={20}
@@ -1007,6 +1015,7 @@ class MenuBar extends React.Component {
                                 onClick={this.props.onClickSettingsModal}
                             >
                                 <img
+                                    className={styles.menuBarIcon}
                                     src={advancedIcon}
                                     draggable={false}
                                     width={20}
@@ -1023,101 +1032,103 @@ class MenuBar extends React.Component {
                         )}
 
                     </div>
-                    <Divider className={styles.divider} />
+                    <div className={styles.projectControls}>
+                        <Divider className={styles.divider} />
 
-                    {this.props.canEditTitle ? (
-                        <div className={classNames(styles.menuBarItem, styles.growable)}>
-                            <MenuBarItemTooltip
-                                enable
-                                id="title-field"
-                            >
-                                <ProjectTitleInput
-                                    className={classNames(styles.titleFieldGrowable)}
-                                />
-                            </MenuBarItemTooltip>
-                        </div>
-                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.username) ? (
-                        <AuthorInfo
-                            className={styles.authorInfo}
-                            imageUrl={this.props.authorThumbnailUrl}
-                            projectId={this.props.projectId}
-                            projectTitle={this.props.projectTitle}
-                            userId={this.props.authorId}
-                            username={this.props.authorUsername}
-                        />
-                    ) : null)}
-                    {this.props.canShare ? (
-                        (this.props.isShowingProject || this.props.isUpdating) && (
-                            <div className={classNames(styles.menuBarItem)}>
-                                <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
-                                    {
-                                        waitForUpdate => (
-                                            <ShareButton
-                                                className={styles.menuBarButton}
-                                                isShared={this.props.isShared}
-                                                /* eslint-disable react/jsx-no-bind */
-                                                onClick={() => {
-                                                    this.handleClickShare(waitForUpdate);
-                                                }}
-                                                /* eslint-enable react/jsx-no-bind */
-                                            />
-                                        )
-                                    }
-                                </ProjectWatcher>
+                        {this.props.canEditTitle ? (
+                            <div className={classNames(styles.menuBarItem, styles.growable)}>
+                                <MenuBarItemTooltip
+                                    enable
+                                    id="title-field"
+                                >
+                                    <ProjectTitleInput
+                                        className={classNames(styles.titleFieldGrowable)}
+                                    />
+                                </MenuBarItemTooltip>
                             </div>
-                        )
-                    ) : this.props.showComingSoon ? (
-                        <div className={classNames(styles.menuBarItem)}>
-                            <MenuBarItemTooltip id="share-button">
-                                <ShareButton className={styles.menuBarButton} />
-                            </MenuBarItemTooltip>
-                        </div>
-                    ) : null}
-                    {this.props.canRemix && (
-                        <div className={classNames(styles.menuBarItem)}>
-                            {remixButton}
-                        </div>
-                    )}
-                    <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
-                        {this.props.enableCommunity ? (
+                        ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.username) ? (
+                            <AuthorInfo
+                                className={styles.authorInfo}
+                                imageUrl={this.props.authorThumbnailUrl}
+                                projectId={this.props.projectId}
+                                projectTitle={this.props.projectTitle}
+                                userId={this.props.authorId}
+                                username={this.props.authorUsername}
+                            />
+                        ) : null)}
+                        {this.props.canShare ? (
                             (this.props.isShowingProject || this.props.isUpdating) && (
-                                <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
-                                    {
-                                        waitForUpdate => (
-                                            <CommunityButton
-                                                className={styles.menuBarButton}
-                                                /* eslint-disable react/jsx-no-bind */
-                                                onClick={() => {
-                                                    this.handleClickSeeCommunity(waitForUpdate);
-                                                }}
-                                                /* eslint-enable react/jsx-no-bind */
-                                            />
-                                        )
-                                    }
-                                </ProjectWatcher>
+                                <div className={classNames(styles.menuBarItem)}>
+                                    <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
+                                        {
+                                            waitForUpdate => (
+                                                <ShareButton
+                                                    className={styles.menuBarButton}
+                                                    isShared={this.props.isShared}
+                                                    /* eslint-disable react/jsx-no-bind */
+                                                    onClick={() => {
+                                                        this.handleClickShare(waitForUpdate);
+                                                    }}
+                                                    /* eslint-enable react/jsx-no-bind */
+                                                />
+                                            )
+                                        }
+                                    </ProjectWatcher>
+                                </div>
                             )
-                        ) : (this.props.showComingSoon ? (
-                            <MenuBarItemTooltip id="community-button">
-                                <CommunityButton className={styles.menuBarButton} />
-                            </MenuBarItemTooltip>
-                        ) : (this.props.enableSeeInside ? (
-                            <SeeInsideButton
-                                className={styles.menuBarButton}
-                                onClick={this.handleClickSeeInside}
-                            />
-                        ) : []))}
-                    </div>
-                    <div className={styles.menuBarItem}>
-                       <Button
-                            className={styles.uploadProjectButton}
-                            onClick={this.handleClickUploadProject}
-                            >
-                            <FormattedMessage
-                            defaultMessage="Chia sẻ lên DANVworkshop"
-                            description="Button to upload a project"
-                            id="tw.uploadProjectButton"
-                            />
-                        </Button>
+                        ) : this.props.showComingSoon ? (
+                            <div className={classNames(styles.menuBarItem)}>
+                                <MenuBarItemTooltip id="share-button">
+                                    <ShareButton className={styles.menuBarButton} />
+                                </MenuBarItemTooltip>
+                            </div>
+                        ) : null}
+                        {this.props.canRemix && (
+                            <div className={classNames(styles.menuBarItem)}>
+                                {remixButton}
+                            </div>
+                        )}
+                        <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
+                            {this.props.enableCommunity ? (
+                                (this.props.isShowingProject || this.props.isUpdating) && (
+                                    <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
+                                        {
+                                            waitForUpdate => (
+                                                <CommunityButton
+                                                    className={styles.menuBarButton}
+                                                    /* eslint-disable react/jsx-no-bind */
+                                                    onClick={() => {
+                                                        this.handleClickSeeCommunity(waitForUpdate);
+                                                    }}
+                                                    /* eslint-enable react/jsx-no-bind */
+                                                />
+                                            )
+                                        }
+                                    </ProjectWatcher>
+                                )
+                            ) : (this.props.showComingSoon ? (
+                                <MenuBarItemTooltip id="community-button">
+                                    <CommunityButton className={styles.menuBarButton} />
+                                </MenuBarItemTooltip>
+                            ) : (this.props.enableSeeInside ? (
+                                <SeeInsideButton
+                                    className={styles.menuBarButton}
+                                    onClick={this.handleClickSeeInside}
+                                />
+                            ) : []))}
+                        </div>
+                        <div className={styles.menuBarItem}>
+                           <Button
+                                className={styles.uploadProjectButton}
+                                onClick={this.handleClickUploadProject}
+                                >
+                                <FormattedMessage
+                                defaultMessage="Chia sẻ lên DANVworkshop"
+                                description="Button to upload a project"
+                                id="tw.uploadProjectButton"
+                                />
+                            </Button>
+                        </div>
                     </div>
                 </div>
 

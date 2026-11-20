@@ -1,7 +1,9 @@
 @import "../../css/colors.css";
+@import "../../css/filters.css";
 
 .icon {
     width: 1.5rem;
+    filter: var(--gui-nav-icon-filter, $filter-icon-black);
 }
 
 .theme-label {
@@ -82,7 +84,7 @@
     opacity: 0.5;
 }
 .disabled img {
-    filter: grayscale(100%);
+    filter: $filter-icon-gray;
 }
 
 .open-link {

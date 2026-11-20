@@ -10,6 +10,7 @@ import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import lightModeIcon from './tw-sun.svg';
 import darkModeIcon from './tw-moon.svg';
+import menuBarStyles from './menu-bar.css';
 import styles from './settings-menu.css';
 
 const GuiThemeMenu = ({
@@ -23,6 +24,7 @@ const GuiThemeMenu = ({
             onClick={() => onChangeTheme(theme.set('gui', theme.gui === GUI_DARK ? GUI_LIGHT : GUI_DARK))}
         >
             <img
+                className={menuBarStyles.menuBarIcon}
                 src={theme.gui === GUI_DARK ? lightModeIcon : darkModeIcon}
                 draggable={false}
                 width={24}

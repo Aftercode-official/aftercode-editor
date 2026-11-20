@@ -75,4 +75,5 @@
     position: relative;
     right: -7px;
     left: -7px;
+    filter: var(--gui-icon-filter, var(--accent-icon-filter, none));
 }

@@ -20,5 +20,14 @@
 }
 .checkbox:checked {
     background-color: $looks-secondary;
-    background-image: url("./checkbox.svg");
+    position: relative;
+    background-image: none;
+}
+.checkbox:checked::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: $page-foreground;
+    mask: url("./checkbox.svg") center / 100% 100% no-repeat;
+    -webkit-mask: url("./checkbox.svg") center / 100% 100% no-repeat;
 }

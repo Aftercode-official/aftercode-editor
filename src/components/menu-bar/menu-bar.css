@@ -3,6 +3,7 @@
 @import "../../css/z-index.css";
 
 .menu-bar {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -33,13 +34,22 @@
     color: $menu-bar-foreground;
 }
 
+.menu-bar-icon {
+    filter: var(--gui-nav-icon-filter, var(--gui-icon-filter, none));
+}
+
 .main-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    max-width: calc(100% - 2rem);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: nowrap;
     align-items: center;
-    flex-grow: 1;
     gap: 0.5rem;
 }
 .inactive {
@@ -89,6 +99,22 @@
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
+}
+
+.project-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.project-controls .menu-bar-item.growable {
+    flex: 0 0 16rem;
+    width: 16rem;
+    max-width: 16rem;
+}
+
+.project-controls .title-field-growable {
+    width: 100%;
 }
 
 .file-group .menu-bar-item {
@@ -146,6 +172,7 @@
 
 .remix-button-icon {
     height: 1.25rem;
+    filter: var(--gui-nav-icon-filter, var(--gui-icon-filter, none));
 }
 
 .coming-soon >:not(.coming-soon-tooltip) {
@@ -156,6 +183,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-left: auto;
 }
 
 .account-info-group .menu-bar-item {
@@ -229,6 +257,7 @@
     height: 1.25rem;
     margin: 0.5rem;
     vertical-align: middle;
+    filter: var(--gui-nav-icon-filter, var(--gui-icon-filter, none));
 }
 
 .collapsible-label {
@@ -242,6 +271,20 @@
 
     .help-icon {
         margin-right: 0;
+    }
+
+    .main-menu {
+        position: static;
+        transform: none;
+        width: auto;
+        max-width: none;
+        flex: 1;
+    }
+
+    .project-controls {
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
     }
 }
 

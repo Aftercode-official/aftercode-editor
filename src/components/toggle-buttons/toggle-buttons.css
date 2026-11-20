@@ -71,7 +71,7 @@
 }
 
 .button[aria-pressed='true'] > img {
-    filter: none;
+    filter: var(--editor-selected-icon-filter, $filter-icon-black);
 }
 
 /* pressed button styling */

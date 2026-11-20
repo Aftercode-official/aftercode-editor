@@ -9,6 +9,7 @@ const TWDesktopSettings = props => (
     <MenuItem onClick={props.onClick}>
         <div className={styles.option}>
             <img
+                className={styles.icon}
                 src={icon}
                 draggable={false}
                 width={24}

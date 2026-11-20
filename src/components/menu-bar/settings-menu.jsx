@@ -35,6 +35,7 @@ const SettingsMenu = ({
         onClose={onRequestClose}
     >
         <img
+            className={menuBarStyles.menuBarIcon}
             src={settingsIcon}
             draggable={false}
             width={20}
@@ -48,6 +49,7 @@ const SettingsMenu = ({
             />
         </span>
         <img
+            className={menuBarStyles.menuBarIcon}
             src={dropdownCaret}
             draggable={false}
             width={8}

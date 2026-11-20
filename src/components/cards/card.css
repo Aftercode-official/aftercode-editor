@@ -77,6 +77,11 @@
 
 .left-button img, .right-button img{
     width: 1.75rem;
+    filter: var(--gui-icon-filter, var(--accent-icon-filter, none));
+}
+
+.header-buttons img {
+    filter: var(--gui-icon-filter, var(--accent-icon-filter, none));
 }
 
 .left-button {
