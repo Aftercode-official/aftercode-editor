@@ -37,7 +37,6 @@ const addons = [
     'custom-menu-bar',
     'editor-theme3',
     'custom-block-text',
-    'custom-style',
     'editor-colored-context-menus',
     'editor-stage-left',
     'editor-buttons-reverse-order',
@@ -86,8 +85,7 @@ const addons = [
 ];
 
 const newAddons = [
-    'expanded-backpack',
-    'custom-style'
+    'expanded-backpack'
 ];
 
 // eslint-disable-next-line import/no-commonjs
